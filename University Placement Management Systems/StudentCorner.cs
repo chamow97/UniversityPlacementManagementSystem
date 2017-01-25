@@ -117,6 +117,7 @@ namespace University_Placement_Management_Systems
 
             backButton.Click += new EventHandler(backButton_Click);
             newAccount.Click += new EventHandler(newAccountButton_Click);
+            loginButton.Click += new EventHandler(loginButton_Click);
         }
 
 
@@ -151,6 +152,20 @@ namespace University_Placement_Management_Systems
             this.Hide();
             newAccount.Show();
 
+        }
+        protected void loginButton_Click(object sender, EventArgs e)
+        {
+            //opening Start form on click
+            StudentLogin newLogin = new StudentLogin();
+
+
+            //adjusting the size of new window to be the exact same size as that of previous
+
+            int formWidth = this.ClientSize.Width;
+            int formHeight = this.ClientSize.Height;
+            newLogin.Size = new Size(formWidth, formHeight);
+            this.Hide();
+            newLogin.Show();
         }
     }
 }

@@ -351,6 +351,8 @@ namespace University_Placement_Management_Systems
             if(browseImage.ShowDialog() == DialogResult.OK)
             {
                 profilePicture.Image = new Bitmap(browseImage.FileName);
+                //resizing the image
+                profilePicture.SizeMode = PictureBoxSizeMode.StretchImage;
                
             }
         }
