@@ -16,7 +16,7 @@ namespace University_Placement_Management_Systems
         {
             Application.EnableVisualStyles();
             Application.SetCompatibleTextRenderingDefault(false);
-            Application.Run(new Start());
+            Application.Run(new StudentArena());
         }
     }
 }

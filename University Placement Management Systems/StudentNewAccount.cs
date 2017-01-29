@@ -9,9 +9,11 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 using System.Windows.Forms;
+using MySql.Data.MySqlClient;
 
 namespace University_Placement_Management_Systems
 {
+
     public partial class StudentNewAccount : Form
     {
         public StudentNewAccount()
@@ -343,6 +345,32 @@ namespace University_Placement_Management_Systems
             else
             {
                 //save the information
+                databaseConnection newDB = new databaseConnection();
+                if(newDB.openConnection() == true)
+                {
+                    try
+                    {
+                        string query = "INSERT INTO Student VALUES(@name, @ID, @password," +
+                      "@department, @qualification, @pic)";
+                        using (MySqlCommand cmd = new MySqlCommand(query, newDB.newConnection))
+                        {
+                            cmd.Parameters.AddWithValue("@name", nameBox.Text);
+                            cmd.Parameters.AddWithValue("@ID", idBox.Text);
+                            cmd.Parameters.AddWithValue("@password", passwordBox.Text);
+                            cmd.Parameters.AddWithValue("@department", departmentBox.Text);
+                            cmd.Parameters.AddWithValue("@qualification", qualificationBox.Text);
+                            cmd.Parameters.AddWithValue("@pic", browseImage.FileName);
+
+                            //executing the query
+                            cmd.ExecuteNonQuery();
+                        }
+                    }
+                    catch(MySqlException excep)
+                    {
+                        MessageBox.Show(excep.Message);
+                    }
+                   
+                }
             }
         }
         protected void browseButton_Click(object sender, EventArgs e)

@@ -8,23 +8,13 @@ using System.Text;
 using System.Threading.Tasks;
 using System.Windows.Forms;
 using System.Data.OleDb;
-
+using MySql.Data.MySqlClient;
 
 namespace University_Placement_Management_Systems
 {
+   
     public partial class AdminCorner : Form
     {
-        public void databaseConnection()
-        {
-            OleDbConnection conn = new OleDbConnection("Provider=Microsoft.ACE.OLEDB.12.0;Data Source=University Placement Management Systems.accdb");
-            OleDbCommand cmd = conn.CreateCommand();
-            conn.Open();
-            cmd.CommandText = "SELECT * FROM [Admin] WHERE Admin_Password = @AdminPassword";
-            cmd.Parameters.AddWithValue("@AdminPassword", passwordBox.Text);
-            cmd.Connection = conn;
-            cmd.ExecuteNonQuery();
-            conn.Close();
-        }
         public AdminCorner()
         {
             InitializeComponent();
@@ -201,16 +191,39 @@ namespace University_Placement_Management_Systems
 
         protected void loginButton_Click(object sender, EventArgs e)
         {
-            if(usernameBox.Text == "" || passwordBox.Text == "")
+            if (usernameBox.Text == "" || passwordBox.Text == "")
             {
                 MessageBox.Show("Username or Password field should not be empty.", "Error", MessageBoxButtons.OK);
                 return;
-            }   
-            
+            }
+
             else
             {
-                databaseConnection();               
-            }                    
+                databaseConnection newDB = new databaseConnection();
+                newDB.openConnection();
+              //  string query = "INSERT INTO Admin VALUES('admin1', 2);";
+               // MySqlCommand cmd = new MySqlCommand(query, newDB.newConnection);
+               // cmd.ExecuteNonQuery();
+                newDB.closeConnection();
+                //List<string>[] list = new List<string>[2];
+                //list[0] = new List<string>();
+                //list[1] = new List<string>();
+                //if(newDB.openConnection() == true)
+                //{
+                //    MySqlCommand cmd = new MySqlCommand(query, newDB.newConnection);
+                //    MySqlDataReader dataReader = cmd.ExecuteReader();
+                //    while(dataReader.Read())
+                //    {
+                //        list[0].Add(dataReader["Admin_ID"] + "");
+                //        list[1].Add(dataReader["Admin_Password"] + "");
+                //    }
+                //    dataReader.Close();
+                //    newDB.closeConnection();
+               
+                //}
+
+            }
+                     
         }
 
         protected void backButton_Click( object sender, EventArgs e)

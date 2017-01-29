@@ -194,23 +194,22 @@ namespace University_Placement_Management_Systems
 
             else
             {
-                //databaseConnection();
+                //databaseConnection;
             }
         }
 
         protected void backButton_Click(object sender, EventArgs e)
         {
             //opening Start form on click
-            Start newStart = new Start();
-
+            StudentCorner newStudent = new StudentCorner();
 
             //adjusting the size of new window to be the exact same size as that of previous
 
             int formWidth = this.ClientSize.Width;
             int formHeight = this.ClientSize.Height;
-            newStart.Size = new Size(formWidth, formHeight);
+            newStudent.Size = new Size(formWidth, formHeight);
             this.Hide();
-            newStart.Show();
+            newStudent.Show();
         }
 
       
