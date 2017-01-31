@@ -1,4 +1,5 @@
-﻿using System;
+﻿using MySql.Data.MySqlClient;
+using System;
 using System.Collections.Generic;
 using System.ComponentModel;
 using System.Data;
@@ -195,7 +196,54 @@ namespace University_Placement_Management_Systems
             else
             {
                 //databaseConnection;
-            }
+                //open database to check the credentials
+                databaseConnection newDB = new databaseConnection();
+
+                //search for the given data from database
+                string query = "SELECT studentID, studentPassword FROM Student WHERE studentID = @username AND studentPassword = @password ;";
+                MySqlCommand cmd = new MySqlCommand(query, newDB.newConnection);
+
+
+                if (newDB.openConnection() == true)
+                {
+                    cmd.Parameters.AddWithValue("@username", usernameBox.Text);
+                    cmd.Parameters.AddWithValue("@password", passwordBox.Text);
+                    MySqlDataReader reader = cmd.ExecuteReader();
+                    bool isFound = false;
+                    while (reader.Read())
+                    {
+                        if (Convert.ToString(reader["studentID"]) == usernameBox.Text &&
+                                Convert.ToString(reader["studentPassword"]) == passwordBox.Text)
+                        {
+                            isFound = true;
+                            break;
+                        }
+                        else
+                        {
+                            isFound = false;
+                        }
+
+                    }
+                    if (isFound == false)
+                    {
+                        MessageBox.Show("Username/Password is incorrect.", "Warning", MessageBoxButtons.OK);
+                    }
+                    else
+                    {
+                        //opening admin arena on click
+                        StudentArena newStudentArena = new StudentArena();
+
+
+                        //adjusting the size of new window to be the exact same size as that of previous
+
+                        int formWidth = this.ClientSize.Width;
+                        int formHeight = this.ClientSize.Height;
+                        newStudentArena.Size = new Size(formWidth, formHeight);
+                        this.Hide();
+                        newStudentArena.Show();
+                    }
+                }
+        }
         }
 
         protected void backButton_Click(object sender, EventArgs e)

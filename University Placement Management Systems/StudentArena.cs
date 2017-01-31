@@ -1,4 +1,5 @@
-﻿using System;
+﻿using MySql.Data.MySqlClient;
+using System;
 using System.Collections.Generic;
 using System.ComponentModel;
 using System.Data;
@@ -105,10 +106,6 @@ namespace University_Placement_Management_Systems
             backButton.Height = 45;
 
 
-            //--------------------------------------------------------------
-
-
-
             //--------------------------------------------------------------------
 
             this.Controls.Add(Title);
@@ -117,6 +114,63 @@ namespace University_Placement_Management_Systems
             this.Controls.Add(deleteButton);
             this.Controls.Add(backButton);
 
+            //--------------------------------------------------------------------
+            //adding click events
+
+
+            backButton.Click += new EventHandler(backButton_Click);
+            deleteButton.Click += new EventHandler(deleteButton_Click);
+
+        }
+
+        protected void backButton_Click(object sender, EventArgs e)
+        {
+            //opening Start form on click
+            StudentCorner newStudent = new StudentCorner();
+
+            //adjusting the size of new window to be the exact same size as that of previous
+
+            int formWidth = this.ClientSize.Width;
+            int formHeight = this.ClientSize.Height;
+            newStudent.Size = new Size(formWidth, formHeight);
+            this.Hide();
+            newStudent.Show();
+        }
+        protected void deleteButton_Click(object sender, EventArgs e)
+        {
+            if(MessageBox.Show("Do you want to delete your record?", "Warning", MessageBoxButtons.YesNo) == DialogResult.Yes)
+            {
+                //delete the information
+                //databaseConnection newDB = new databaseConnection();
+                //if (newDB.openConnection() == true)
+                //{
+                //    try
+                //    {
+                //        string query = "DELETE FROM Student WHERE";
+                //        using (MySqlCommand cmd = new MySqlCommand(query, newDB.newConnection))
+                //        {
+                //            cmd.Parameters.AddWithValue("@name", nameBox.Text);
+                //            cmd.Parameters.AddWithValue("@ID", idBox.Text);
+                //            cmd.Parameters.AddWithValue("@password", passwordBox.Text);
+                //            cmd.Parameters.AddWithValue("@department", departmentBox.Text);
+                //            cmd.Parameters.AddWithValue("@qualification", qualificationBox.Text);
+                //            cmd.Parameters.AddWithValue("@pic", browseImage.FileName);
+
+                //            //executing the query
+                //            cmd.ExecuteNonQuery();
+                //        }
+                //    }
+                //    catch (MySqlException excep)
+                //    {
+                //        MessageBox.Show(excep.Message);
+                //    }
+
+                //}
+            }
+            else
+            {
+                return;
+            }
         }
     }
 }

@@ -199,31 +199,56 @@ namespace University_Placement_Management_Systems
 
             else
             {
+                //open database to check the credentials
                 databaseConnection newDB = new databaseConnection();
-                newDB.openConnection();
-              //  string query = "INSERT INTO Admin VALUES('admin1', 2);";
-               // MySqlCommand cmd = new MySqlCommand(query, newDB.newConnection);
-               // cmd.ExecuteNonQuery();
-                newDB.closeConnection();
-                //List<string>[] list = new List<string>[2];
-                //list[0] = new List<string>();
-                //list[1] = new List<string>();
-                //if(newDB.openConnection() == true)
-                //{
-                //    MySqlCommand cmd = new MySqlCommand(query, newDB.newConnection);
-                //    MySqlDataReader dataReader = cmd.ExecuteReader();
-                //    while(dataReader.Read())
-                //    {
-                //        list[0].Add(dataReader["Admin_ID"] + "");
-                //        list[1].Add(dataReader["Admin_Password"] + "");
-                //    }
-                //    dataReader.Close();
-                //    newDB.closeConnection();
-               
-                //}
+                
+                //search for the given data from database
+                string query = "SELECT Admin_Password, Admin_ID FROM Admin WHERE Admin_ID = @username AND Admin_Password = @password ;";
+                MySqlCommand cmd = new MySqlCommand(query, newDB.newConnection);
+
+
+                if (newDB.openConnection() == true)
+                {
+                    cmd.Parameters.AddWithValue("@username", usernameBox.Text);
+                    cmd.Parameters.AddWithValue("@password", passwordBox.Text);
+                    MySqlDataReader reader = cmd.ExecuteReader();
+                    bool isFound = false;
+                    while (reader.Read())
+                    {
+                        if (Convert.ToString(reader["Admin_ID"]) == usernameBox.Text &&
+                                Convert.ToString(reader["Admin_Password"]) == passwordBox.Text)
+                        {
+                            isFound = true;
+                            break;
+                        } 
+                        else
+                        {
+                            isFound = false;
+                        }  
+                        
+                    }
+                    if (isFound == false)
+                    {
+                        MessageBox.Show("Username/Password is incorrect.", "Warning", MessageBoxButtons.OK);
+                    }
+                    else
+                    {
+                        //opening admin arena on click
+                        AdminArena newAdminArena = new AdminArena();
+
+
+                        //adjusting the size of new window to be the exact same size as that of previous
+
+                        int formWidth = this.ClientSize.Width;
+                        int formHeight = this.ClientSize.Height;
+                        newAdminArena.Size = new Size(formWidth, formHeight);
+                        this.Hide();
+                        newAdminArena.Show();
+                    }
+                }
 
             }
-                     
+
         }
 
         protected void backButton_Click( object sender, EventArgs e)
