@@ -211,23 +211,27 @@ namespace University_Placement_Management_Systems
                 {
                     cmd.Parameters.AddWithValue("@username", usernameBox.Text);
                     cmd.Parameters.AddWithValue("@password", passwordBox.Text);
-                    MySqlDataReader reader = cmd.ExecuteReader();
                     bool isFound = false;
-                    while (reader.Read())
+                    using (MySqlDataReader reader = cmd.ExecuteReader())
                     {
-                        if (Convert.ToString(reader["Admin_ID"]) == usernameBox.Text &&
-                                Convert.ToString(reader["Admin_Password"]) == passwordBox.Text)
+                        while (reader.Read())
                         {
-                            isFound = true;
-                            break;
-                        } 
-                        else
-                        {
-                            isFound = false;
-                        }  
-                        
+                            if (Convert.ToString(reader["Admin_ID"]) == usernameBox.Text &&
+                                    Convert.ToString(reader["Admin_Password"]) == passwordBox.Text)
+                            {
+                                isFound = true;
+                                break;
+                            }
+                            else
+                            {
+                                isFound = false;
+                            }
+
+                        }
+
                     }
-                    if (isFound == false)
+                        
+                   if (isFound == false)
                     {
                         MessageBox.Show("Username/Password is incorrect.", "Warning", MessageBoxButtons.OK);
                     }

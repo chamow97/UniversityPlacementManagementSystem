@@ -16,9 +16,15 @@ namespace University_Placement_Management_Systems
         public string userName;
         public string passWord;
 
+        public string MultipleActiveResultSets { get; private set; }
+
         public databaseConnection()
         {
             Initialize();
+        }
+        ~databaseConnection()
+        {
+           closeConnection();
         }
         public void Initialize()
         {
@@ -28,8 +34,9 @@ namespace University_Placement_Management_Systems
             passWord = "msdhoni";
             string connectionString;
             connectionString = "SERVER=" + server + ";" + "DATABASE=" + database + ";"
-                + "USERNAME=" + userName + ";" + "PASSWORD=" + passWord + ";";
-            newConnection = new MySqlConnection(connectionString);
+                + "USERNAME=" + userName + ";" + "PASSWORD=" + passWord + ";" ;
+             newConnection = new MySqlConnection(connectionString);
+            //openConnection();
         }
 
         public bool openConnection()

@@ -24,7 +24,7 @@ namespace University_Placement_Management_Systems
         Button deleteButton = new Button();
         Button backButton = new Button();
 
-
+        
         private void StudentArena_Load(object sender, EventArgs e)
         {
             //making this form maximized
@@ -120,6 +120,7 @@ namespace University_Placement_Management_Systems
 
             backButton.Click += new EventHandler(backButton_Click);
             deleteButton.Click += new EventHandler(deleteButton_Click);
+            editButton.Click += new EventHandler(editButton_Click);
 
         }
 
@@ -141,36 +142,47 @@ namespace University_Placement_Management_Systems
             if(MessageBox.Show("Do you want to delete your record?", "Warning", MessageBoxButtons.YesNo) == DialogResult.Yes)
             {
                 //delete the information
-                //databaseConnection newDB = new databaseConnection();
-                //if (newDB.openConnection() == true)
-                //{
-                //    try
-                //    {
-                //        string query = "DELETE FROM Student WHERE";
-                //        using (MySqlCommand cmd = new MySqlCommand(query, newDB.newConnection))
-                //        {
-                //            cmd.Parameters.AddWithValue("@name", nameBox.Text);
-                //            cmd.Parameters.AddWithValue("@ID", idBox.Text);
-                //            cmd.Parameters.AddWithValue("@password", passwordBox.Text);
-                //            cmd.Parameters.AddWithValue("@department", departmentBox.Text);
-                //            cmd.Parameters.AddWithValue("@qualification", qualificationBox.Text);
-                //            cmd.Parameters.AddWithValue("@pic", browseImage.FileName);
-
-                //            //executing the query
-                //            cmd.ExecuteNonQuery();
-                //        }
-                //    }
-                //    catch (MySqlException excep)
-                //    {
-                //        MessageBox.Show(excep.Message);
-                //    }
-
-                //}
+                databaseConnection newDB = new databaseConnection();
+                
+                if (newDB.openConnection() == true)
+                {
+                        string query = "DELETE FROM Student WHERE studentID = @username;";
+                        MySqlCommand cmd = new MySqlCommand(query, newDB.newConnection);
+                        TextBox tempBox = new TextBox();
+                        StudentLogin newStudent = new StudentLogin();
+                        tempBox.Text = newStudent.usernameBox.Text;
+                        MessageBox.Show(String.Format("{0}", tempBox.Text));    
+                        cmd.Parameters.AddWithValue("@username", tempBox.Text);
+                        try
+                        {
+                            cmd.ExecuteNonQuery();
+                            MessageBox.Show("Record Deleted Successfully", "Alert", MessageBoxButtons.OK);
+                        }
+                        catch
+                        {
+                            MessageBox.Show("Record could not be Deleted. Try again later.", "Warning", MessageBoxButtons.OK);
+                        }
+                                       
+                }
             }
             else
             {
                 return;
             }
+        }
+        protected void editButton_Click(object sender, EventArgs e)
+        {
+            //opening EditStudent form on click
+            EditStudentData newEdit = new EditStudentData();
+
+            //adjusting the size of new window to be the exact same size as that of previous
+
+            int formWidth = this.ClientSize.Width;
+            int formHeight = this.ClientSize.Height;
+            newEdit.Size = new Size(formWidth, formHeight);
+            this.Hide();
+            newEdit.Show();
+
         }
     }
 }

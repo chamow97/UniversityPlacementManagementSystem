@@ -22,7 +22,7 @@ namespace University_Placement_Management_Systems
         Label Title = new Label();
         Label studentLabel = new Label();
         Label loginLabel = new Label();
-        TextBox usernameBox = new TextBox();
+        public TextBox usernameBox = new TextBox();
         Label passwordLabel = new Label();
         Button loginButton = new Button();
         Button backButton = new Button();
@@ -207,23 +207,29 @@ namespace University_Placement_Management_Systems
                 if (newDB.openConnection() == true)
                 {
                     cmd.Parameters.AddWithValue("@username", usernameBox.Text);
+                    StudentArena newArena = new StudentArena();
                     cmd.Parameters.AddWithValue("@password", passwordBox.Text);
-                    MySqlDataReader reader = cmd.ExecuteReader();
                     bool isFound = false;
-                    while (reader.Read())
+
+                    using (MySqlDataReader reader = cmd.ExecuteReader())
                     {
-                        if (Convert.ToString(reader["studentID"]) == usernameBox.Text &&
-                                Convert.ToString(reader["studentPassword"]) == passwordBox.Text)
+                        while (reader.Read())
                         {
-                            isFound = true;
-                            break;
-                        }
-                        else
-                        {
-                            isFound = false;
+                            if (Convert.ToString(reader["studentID"]) == usernameBox.Text &&
+                                    Convert.ToString(reader["studentPassword"]) == passwordBox.Text)
+                            {
+                                isFound = true;
+                                break;
+                            }
+                            else
+                            {
+                                isFound = false;
+                            }
+
                         }
 
                     }
+                        
                     if (isFound == false)
                     {
                         MessageBox.Show("Username/Password is incorrect.", "Warning", MessageBoxButtons.OK);
@@ -242,6 +248,7 @@ namespace University_Placement_Management_Systems
                         this.Hide();
                         newStudentArena.Show();
                     }
+                    
                 }
         }
         }
