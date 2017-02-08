@@ -27,8 +27,7 @@ namespace University_Placement_Management_Systems
         Button loginButton = new Button();
         Button backButton = new Button();
         TextBox passwordBox = new TextBox();
-
-
+        
         private void StudentLogin_Load(object sender, EventArgs e)
         {
             //making this form maximized
@@ -210,7 +209,6 @@ namespace University_Placement_Management_Systems
                     StudentArena newArena = new StudentArena();
                     cmd.Parameters.AddWithValue("@password", passwordBox.Text);
                     bool isFound = false;
-
                     using (MySqlDataReader reader = cmd.ExecuteReader())
                     {
                         while (reader.Read())

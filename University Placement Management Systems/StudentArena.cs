@@ -23,8 +23,8 @@ namespace University_Placement_Management_Systems
         Button editButton = new Button();
         Button deleteButton = new Button();
         Button backButton = new Button();
+        private object newStudentTemp;
 
-        
         private void StudentArena_Load(object sender, EventArgs e)
         {
             //making this form maximized
@@ -149,8 +149,7 @@ namespace University_Placement_Management_Systems
                         string query = "DELETE FROM Student WHERE studentID = @username;";
                         MySqlCommand cmd = new MySqlCommand(query, newDB.newConnection);
                         TextBox tempBox = new TextBox();
-                        StudentLogin newStudent = new StudentLogin();
-                        tempBox.Text = newStudent.usernameBox.Text;
+                        tempBox.Text = newStudentTemp.userName;
                         MessageBox.Show(String.Format("{0}", tempBox.Text));    
                         cmd.Parameters.AddWithValue("@username", tempBox.Text);
                         try
