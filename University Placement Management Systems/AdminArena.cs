@@ -1,4 +1,5 @@
-﻿using System;
+﻿using MySql.Data.MySqlClient;
+using System;
 using System.Collections.Generic;
 using System.ComponentModel;
 using System.Data;
@@ -191,8 +192,49 @@ namespace University_Placement_Management_Systems
             }
             else
             {
-                //show the filtered records
-            }
+                //show the number of filtered records
+                databaseConnection newDB = new databaseConnection();
+
+                //search for the given data from database
+                int counter = 0;
+                string query = "SELECT * FROM Student WHERE studentDepartment = @dept AND studentQualification = @qualification;";
+                MySqlCommand cmd = new MySqlCommand(query, newDB.newConnection);
+                cmd.Parameters.AddWithValue("@dept", departmentBox.Text);
+                cmd.Parameters.AddWithValue("@qualification", qualificationBox.Text);
+                 if (newDB.openConnection() == true)
+                {
+                    using (MySqlDataReader reader = cmd.ExecuteReader())
+                    {
+                        
+                        while (reader.Read())
+                        {
+                            ++counter;
+                        }
+                        
+
+
+                    }
+                }
+                if(counter == 0)
+                {
+                    MessageBox.Show("There is no record in "
+                    + departmentBox.Text + " Department studying " + qualificationBox.Text + " .");
+                }
+                else if(counter == 1)
+                {
+                    MessageBox.Show("There is a record in "
+                   + departmentBox.Text + " Department studying " + qualificationBox.Text + " .");
+
+                }
+                else
+                {
+                    MessageBox.Show("There are " + Convert.ToString(counter) + " records in "
+                    + departmentBox.Text + " Department studying " + qualificationBox.Text + " .");
+
+                }
+
+                return;
+                }
         }
 
         protected void backButton_Click(object sender, EventArgs e)
