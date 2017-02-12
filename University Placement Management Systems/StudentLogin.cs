@@ -17,8 +17,11 @@ namespace University_Placement_Management_Systems
         {
             InitializeComponent();
         }
+        public static class PassUsername
+        {
+            public static string tempUsername { get; set; }
+        }
         //initializing tools
-
         Label Title = new Label();
         Label studentLabel = new Label();
         Label loginLabel = new Label();
@@ -93,8 +96,7 @@ namespace University_Placement_Management_Systems
             usernameBox.Height = 70;
             usernameBox.ForeColor = Color.Black;
             usernameBox.BackColor = Color.White;
-
-
+            
             //--------------------------------------------------------------------
 
 
@@ -206,7 +208,7 @@ namespace University_Placement_Management_Systems
                 if (newDB.openConnection() == true)
                 {
                     cmd.Parameters.AddWithValue("@username", usernameBox.Text);
-                    StudentArena newArena = new StudentArena();
+                    StudentArena newArena = new StudentArena(usernameBox.Text);
                     cmd.Parameters.AddWithValue("@password", passwordBox.Text);
                     bool isFound = false;
                     using (MySqlDataReader reader = cmd.ExecuteReader())
@@ -235,7 +237,7 @@ namespace University_Placement_Management_Systems
                     else
                     {
                         //opening admin arena on click
-                        StudentArena newStudentArena = new StudentArena();
+                        StudentArena newStudentArena = new StudentArena(usernameBox.Text);
 
 
                         //adjusting the size of new window to be the exact same size as that of previous
@@ -244,7 +246,8 @@ namespace University_Placement_Management_Systems
                         int formHeight = this.ClientSize.Height;
                         newStudentArena.Size = new Size(formWidth, formHeight);
                         this.Hide();
-                        newStudentArena.Show();
+                        //newStudentArena.PassClass = PassUsername;
+                        newStudentArena.ShowDialog();
                     }
                     
                 }
@@ -264,7 +267,7 @@ namespace University_Placement_Management_Systems
             this.Hide();
             newStudent.Show();
         }
-
+      
       
     }
 }

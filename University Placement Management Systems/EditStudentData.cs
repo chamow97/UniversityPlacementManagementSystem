@@ -13,9 +13,12 @@ namespace University_Placement_Management_Systems
 {
     public partial class EditStudentData : Form
     {
-        public EditStudentData()
+        string studentUsername;
+        public EditStudentData(string userName)
         {
             InitializeComponent();
+            studentUsername = userName;
+
         }
         //initializing tools
 
@@ -48,13 +51,9 @@ namespace University_Placement_Management_Systems
             databaseConnection newDB = new databaseConnection();
 
             //search for the given data from database
-            string query = "SELECT studentName FROM Student WHERE studentID = @username;";
-            TextBox tempBox = new TextBox();
-            StudentLogin newStudent = new StudentLogin();
-            tempBox.Text = newStudent.usernameBox.Text;
-            MessageBox.Show(tempBox.Text);
+            string query = "SELECT * FROM Student WHERE studentID = @username;";
             MySqlCommand cmd = new MySqlCommand(query, newDB.newConnection);
-            cmd.Parameters.AddWithValue("@username", tempBox.Text);
+            cmd.Parameters.AddWithValue("@username", studentUsername);
 
             if (newDB.openConnection() == true)
             {
@@ -64,12 +63,12 @@ namespace University_Placement_Management_Systems
                     //{
                     while (reader.Read())
                     {
-                        MessageBox.Show(reader[0].ToString());
                             nameBox.Text = reader[0].ToString();
                             idBox.Text = reader[1].ToString();
                             passwordBox.Text = "";
                             departmentBox.Text = reader[3].ToString();
                             qualificationBox.Text = reader[4].ToString();
+                            browseImage.FileName = reader[5].ToString();
                     }                     
 
                     //}
@@ -298,13 +297,15 @@ namespace University_Placement_Management_Systems
 
 
 
-                    //--------------------------------------------------------------------
+                //--------------------------------------------------------------------
+                profilePicture.Image = new Bitmap(browseImage.FileName);
+                //resizing the image
+                profilePicture.SizeMode = PictureBoxSizeMode.StretchImage;
 
 
+                //adding labels, buttons etc to form
 
-                    //adding labels, buttons etc to form
-
-                    this.Controls.Add(Title);
+                this.Controls.Add(Title);
                     this.Controls.Add(studentName);
                     this.Controls.Add(studentID);
                     this.Controls.Add(studentPassword);
@@ -324,13 +325,110 @@ namespace University_Placement_Management_Systems
                     this.Controls.Add(profilePicture);
 
 
-                    //adding Button controls
-                    //backButton.Click += new EventHandler(backButton_Click);
-                    //submitButton.Click += new EventHandler(submitButton_Click);
-                    //browseButton.Click += new EventHandler(browseButton_Click);
+                //adding Button controls
+                backButton.Click += new EventHandler(backButton_Click);
+                submitButton.Click += new EventHandler(submitButton_Click);
+                browseButton.Click += new EventHandler(browseButton_Click);
+            }
+            }
+        protected void browseButton_Click(object sender, EventArgs e)
+        {
+            browseImage.Filter = "Image Files(*.jpg; *.jpeg; *.gif; *.bmp)|*.jpg; *.jpeg; *.gif; *.bmp";
+            if (browseImage.ShowDialog() == DialogResult.OK)
+            {
+                profilePicture.Image = new Bitmap(browseImage.FileName);
+                //resizing the image
+                profilePicture.SizeMode = PictureBoxSizeMode.StretchImage;
 
+            }
+        }
+        protected void backButton_Click(object sender, EventArgs e)
+        {
+            if (MessageBox.Show("Your changes will be lost. Do you want to continue?",
+                "Alert",
+                MessageBoxButtons.YesNo) == DialogResult.Yes)
+            {
+                //opening student form on click
+                StudentArena newStudent = new StudentArena(studentUsername);
+
+
+                //adjusting the size of new window to be the exact same size as that of previous
+
+                int formWidth = this.ClientSize.Width;
+                int formHeight = this.ClientSize.Height;
+                newStudent.Size = new Size(formWidth, formHeight);
+                this.Hide();
+                newStudent.Show();
+            }
+
+            else
+            {
+                return;
+            }
+
+        }
+
+        protected void submitButton_Click(object sender, EventArgs e)
+        {
+
+            if (nameBox.Text == "Enter your name" ||
+                idBox.Text == "Enter your ID" ||
+                passwordBox.Text == "" ||
+                departmentBox.Text == "Select your Department" ||
+                qualificationBox.Text == "Select your Qualification" ||
+                browseImage.FileName == "")
+            {
+                MessageBox.Show("All fields are compulsory.", "Alert", MessageBoxButtons.OK);
+                return;
+            }
+            else
+            {
+                //save the information
+                databaseConnection newDB = new databaseConnection();
+                if (newDB.openConnection() == true)
+                {
+                    try
+                    {
+                        string query1 = "DELETE FROM Student WHERE studentID = @username;";
+                        MySqlCommand cmd1 = new MySqlCommand(query1, newDB.newConnection);
+
+
+                        cmd1.Parameters.AddWithValue("@username", studentUsername);
+                        cmd1.ExecuteNonQuery();
+                        string query = "INSERT INTO Student VALUES(@name, @ID, @password," +
+                      "@department, @qualification, @pic)";
+                        using (MySqlCommand cmd = new MySqlCommand(query, newDB.newConnection))
+                        {
+                            cmd.Parameters.AddWithValue("@name", nameBox.Text);
+                            cmd.Parameters.AddWithValue("@ID", idBox.Text);
+                            cmd.Parameters.AddWithValue("@password", passwordBox.Text);
+                            cmd.Parameters.AddWithValue("@department", departmentBox.Text);
+                            cmd.Parameters.AddWithValue("@qualification", qualificationBox.Text);
+                            cmd.Parameters.AddWithValue("@pic", browseImage.FileName);
+
+                            //executing the query
+                            cmd.ExecuteNonQuery();
+                        }
+                        MessageBox.Show("Record Saved Successfully!!", "Info", MessageBoxButtons.OK);
+                        //opening student form on click
+                        StudentCorner newStudent = new StudentCorner();
+
+
+                        //adjusting the size of new window to be the exact same size as that of previous
+
+                        int formWidth = this.ClientSize.Width;
+                        int formHeight = this.ClientSize.Height;
+                        newStudent.Size = new Size(formWidth, formHeight);
+                        this.Hide();
+                        newStudent.Show();
+                    }
+                    catch (MySqlException excep)
+                    {
+                        MessageBox.Show(excep.Message);
+                    }
 
                 }
             }
         }
+    }
     }

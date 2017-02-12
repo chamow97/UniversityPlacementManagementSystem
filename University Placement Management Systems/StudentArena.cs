@@ -13,23 +13,27 @@ namespace University_Placement_Management_Systems
 {
     public partial class StudentArena : Form
     {
-        public StudentArena()
+        //public tempClass PassClass { get; set; }
+        string userName;
+        
+        public StudentArena(string tempString)
         {
             InitializeComponent();
+            userName = tempString;
         }
+    
+        
         Label studentLabel = new Label();
         Label Title = new Label();
 
         Button editButton = new Button();
         Button deleteButton = new Button();
         Button backButton = new Button();
-        private object newStudentTemp;
-
+        
         private void StudentArena_Load(object sender, EventArgs e)
         {
             //making this form maximized
             this.WindowState = FormWindowState.Maximized;
-
 
             //adding the label and buttons to the form
             Title.Text = "Placement Management Systems";
@@ -148,15 +152,26 @@ namespace University_Placement_Management_Systems
                 {
                         string query = "DELETE FROM Student WHERE studentID = @username;";
                         MySqlCommand cmd = new MySqlCommand(query, newDB.newConnection);
-                        TextBox tempBox = new TextBox();
-                        tempBox.Text = newStudentTemp.userName;
-                        MessageBox.Show(String.Format("{0}", tempBox.Text));    
-                        cmd.Parameters.AddWithValue("@username", tempBox.Text);
+                        
+
+                        cmd.Parameters.AddWithValue("@username", userName);
+                    //MessageBox.Show(String.Format("{0}", this.preserveNewLogin.usernameBox.Text));
                         try
                         {
                             cmd.ExecuteNonQuery();
                             MessageBox.Show("Record Deleted Successfully", "Alert", MessageBoxButtons.OK);
-                        }
+                        //opening student form on click
+                        StudentCorner newStudent = new StudentCorner();
+
+
+                        //adjusting the size of new window to be the exact same size as that of previous
+
+                        int formWidth = this.ClientSize.Width;
+                        int formHeight = this.ClientSize.Height;
+                        newStudent.Size = new Size(formWidth, formHeight);
+                        this.Hide();
+                        newStudent.Show();
+                    }
                         catch
                         {
                             MessageBox.Show("Record could not be Deleted. Try again later.", "Warning", MessageBoxButtons.OK);
@@ -172,7 +187,7 @@ namespace University_Placement_Management_Systems
         protected void editButton_Click(object sender, EventArgs e)
         {
             //opening EditStudent form on click
-            EditStudentData newEdit = new EditStudentData();
+            EditStudentData newEdit = new EditStudentData(userName);
 
             //adjusting the size of new window to be the exact same size as that of previous
 
@@ -180,7 +195,7 @@ namespace University_Placement_Management_Systems
             int formHeight = this.ClientSize.Height;
             newEdit.Size = new Size(formWidth, formHeight);
             this.Hide();
-            newEdit.Show();
+            newEdit.ShowDialog();
 
         }
     }

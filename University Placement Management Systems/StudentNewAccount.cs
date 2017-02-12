@@ -364,6 +364,18 @@ namespace University_Placement_Management_Systems
                             //executing the query
                             cmd.ExecuteNonQuery();
                         }
+                        MessageBox.Show("Record Saved Successfully!!", "Info", MessageBoxButtons.OK);
+                        //opening student form on click
+                        StudentCorner newStudent = new StudentCorner();
+
+
+                        //adjusting the size of new window to be the exact same size as that of previous
+
+                        int formWidth = this.ClientSize.Width;
+                        int formHeight = this.ClientSize.Height;
+                        newStudent.Size = new Size(formWidth, formHeight);
+                        this.Hide();
+                        newStudent.Show();
                     }
                     catch(MySqlException excep)
                     {
