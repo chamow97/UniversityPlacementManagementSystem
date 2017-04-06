@@ -25,7 +25,7 @@ control the data.
 **Admin_Password | Admin_ID**
 
 ##### NOTE : You can change these according to your needs at **"databaseConnection.cs"** file.
-##### Also change the username and password in ** "databaseConnection.cs" ** to your MySQL username and password.
+##### Also change the username and password in **"databaseConnection.cs"** to your MySQL username and password.
 
 #### Things to do before running :
 
