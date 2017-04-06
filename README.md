@@ -23,11 +23,9 @@ control the data.
 **studentName | studentID | studentPassword | studentDepartment | studentQualification | pictureURL**
 - Admin Table fields :  
 **Admin_Password | Admin_ID**
-- mySQL username : **root**
-- mySQL password : **msdhoni**
-- mySQL server : **localhost**
 
 ##### NOTE : You can change these according to your needs at **"databaseConnection.cs"** file.
+##### Also change the username and password in ** "databaseConnection.cs" ** to your MySQL username and password.
 
 #### Things to do before running :
 
