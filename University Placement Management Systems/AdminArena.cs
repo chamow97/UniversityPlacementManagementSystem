@@ -116,7 +116,6 @@ namespace University_Placement_Management_Systems
             departmentBox.Items.Add("ECE");
             departmentBox.Items.Add("I.T");
             departmentBox.Items.Add("Mechanical");
-            departmentBox.Items.Add("Any Department");
             departmentBox.Anchor = AnchorStyles.Top;
 
             //--------------------------------------------------------------------
@@ -129,7 +128,6 @@ namespace University_Placement_Management_Systems
             qualificationBox.Text = "Select the Qualification";
             qualificationBox.Items.Add("U.G");
             qualificationBox.Items.Add("P.G");
-            qualificationBox.Items.Add("Any Qualification");
             qualificationBox.Anchor = AnchorStyles.Top;
 
 
