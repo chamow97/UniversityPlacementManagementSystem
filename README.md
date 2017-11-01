@@ -66,7 +66,7 @@ Also change the username and password in "databaseConnection.cs" to your MySQL u
 <br>
 <h4>Start Page</h4>
 <br>
-<img src="/Screenshots/Start Page.PNG" />
+<img src="/Screenshots/StartPage.PNG" />
 <br>
 <br>
 <h4>Student Portal</h4>
